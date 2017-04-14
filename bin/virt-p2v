@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+$:.unshift File.join(File.dirname(__FILE__), "../ext")
+$:.unshift File.join(File.dirname(__FILE__), "../lib")
+
+require 'virt-p2v/ui/main'
+require 'virt-p2v/ui/convert'
+require 'virt-p2v/converter'
+
+converter = VirtP2V::Converter.new
+
+# Initialise the wizard UI
+ui = VirtP2V::UI::Main.new
+
+# Initialize wizard pages
+VirtP2V::UI::Convert.init(ui, converter)
+
+ui.show
+ui.main_loop
+
+exit(0)
