@@ -63,13 +63,16 @@ class Converter
     def confirm_cancel(f)
          @flag = f
     end
+    def confirm_clean(f)
+         @flag = f
+    end
     private
 
     def initialize
         @mutex = Mutex.new
         @profile = nil
         @debug = false
-        @flag = false
+        @flag = 0
         # destination which files are transferred to
         @dest = nil
 
@@ -95,10 +98,11 @@ class Converter
                     # CORE function :)
                     run(cb) {
                         begin
-                            `dd if=#{path} | gzip >#{name.gsub(/ /, '\\ ')}`
+                            #`dd if=#{path} | gzip >#{name.gsub(/ /, '\\ ')}`
+			    `dd if=#{path} of=#{name.gsub(/ /, '\\ ')}`
                             Gtk.queue {
-                                if flag then  
-                                    status.call("迁移已取消")
+                                if flag == 1 then  
+                                    status.call("迁移已取消,请点击清除按钮,清除文件")
                                 else
                                     status.call('迁移已完成')
                                 end
