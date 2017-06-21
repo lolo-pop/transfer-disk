@@ -248,6 +248,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+		<property name="padding">32</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -265,6 +266,38 @@
                 <property name="fill">False</property>
                 <property name="padding">32</property>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="clean_button">
+                <property name="label" translatable="yes">清除</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="clean_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">32</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+	    <child>
+              <object class="GtkButton" id="exit_button">
+                <property name="label" translatable="yes">退出</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="exit_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">32</property>
+                <property name="position">4</property>
               </packing>
             </child>
           </object>
