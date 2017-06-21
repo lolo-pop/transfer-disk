@@ -1,7 +1,7 @@
 require 'gtk2'
 
 require 'virt-p2v/blockdevice'
-
+require 'virt-p2v/gtk-queue'
 
 module VirtP2V::UI::Convert
 
@@ -40,6 +40,8 @@ module VirtP2V::UI::Convert
         @status     = ui.get_object('convert_status')
         @path       = ui.get_object('convert_path')
         @cancel     = ui.get_object('cancel_button')
+        @clean      = ui.get_object('clean_button')
+        @exit       = ui.get_object('exit_button')
         # Get initial values from converter
         @filename = nil
         @name.text = @filename
@@ -69,6 +71,11 @@ module VirtP2V::UI::Convert
                             method(:convert_path_clicked))
         ui.register_handler('cancel_button_clicked',
                             method(:cancel_button_clicked))
+        ui.register_handler('clean_button_clicked',
+                            method(:clean_button_clicked))
+	ui.register_handler('exit_button_clicked',
+                            method(:exit_button_clicked))
+
         @state = nil
         set_state(UI_STATE_VALID)
         update_values
@@ -78,7 +85,7 @@ module VirtP2V::UI::Convert
     end
 
     def self.event(event, status)
-	#convert
+    #convert
         case @state
         when UI_STATE_INVALID
             case event
@@ -182,10 +189,34 @@ module VirtP2V::UI::Convert
         begin
             `kill -9 #{res[1].to_i}`
             `kill -9 #{killed}`
-            `rm -f #{@filename.gsub(/ /, '\\ ')}` 
+            #`rm -f #{@filename.gsub(/ /, '\\ ')}` 
         end
-        flag = true
+        flag = 1
         @converter.confirm_cancel(flag)
+    end
+    def self.clean
+        begin
+	    if @filename == nil then 
+		#:p @filename
+	    else
+                `rm -f #{@filename.gsub(/ /, '\\ ')}`
+	    end 
+	    #Gtk.queue {
+	    #    status.call('清除已成功')
+            #}
+	    @status.text = '清除已成功'
+        end
+	#status.call('清除已成功')
+        flag = 2
+        @converter.confirm_clean(flag)
+    end
+    def self.exit
+        begin
+            exit!
+        end
+        #status.call('清除已成功')
+        #flag = 2
+        #@converter.confirm_clean(flag)
     end
 
     def self.convert_fixed_list_row_changed(model, path, iter)
@@ -306,5 +337,12 @@ module VirtP2V::UI::Convert
     def self.cancel_button_clicked
         cancel
     end
+    def self.clean_button_clicked
+        clean
+    end
+    def self.exit_button_clicked
+        exit
+    end
+
 
 end # module
